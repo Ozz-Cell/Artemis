@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://2r45jx0td7my"]
+
+[ext_resource type="PackedScene" uid="uid://j1q0dkgste4i" path="res://Dron.tscn" id="1_1tjja"]
+[ext_resource type="PackedScene" uid="uid://d3kx5tepki58g" path="res://jugador.tscn" id="1_b7rsr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b7rsr"]
+size = Vector2(0.15211332, 1025.3785)
+
+[node name="Laboratorio de pruebas" type="Node2D"]
+position = Vector2(-25, -328)
+scale = Vector2(0.46880844, 0.60028553)
+
+[node name="jugador" parent="." instance=ExtResource("1_b7rsr")]
+position = Vector2(-861.7592, 431.46127)
+scale = Vector2(1.0421164, 0.8010481)
+floor_block_on_wall = false
+floor_snap_length = 0.0
+
+[node name="pared izquierda" type="StaticBody2D" parent="."]
+position = Vector2(-1249.9775, 408.1391)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pared izquierda"]
+position = Vector2(-16, -383.5)
+shape = SubResource("RectangleShape2D_b7rsr")
+
+[node name="suelo" type="StaticBody2D" parent="."]
+position = Vector2(1461.1514, 513.0892)
+rotation = -1.5705535
+scale = Vector2(0.7739376, 8.079584)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="suelo"]
+position = Vector2(-16.170233, -267.38678)
+scale = Vector2(0.99999946, 0.99999946)
+shape = SubResource("RectangleShape2D_b7rsr")
+
+[node name="pared derecha" type="StaticBody2D" parent="."]
+position = Vector2(2836.9792, -69.96669)
+scale = Vector2(110.17175, 9.672416)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pared derecha"]
+position = Vector2(-15.334141, -372.18765)
+shape = SubResource("RectangleShape2D_b7rsr")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("1_1tjja")]
+position = Vector2(-953.4811, 578.0582)
+scale = Vector2(2.8322875, 1.9607517)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-70.39122, -31.651602)
+scale = Vector2(1.2750877, -3.0292542)

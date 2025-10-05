@@ -1,0 +1,122 @@
+[gd_scene load_steps=8 format=3 uid="uid://bb1mvavameqdo"]
+
+[ext_resource type="PackedScene" uid="uid://h8a2m78t3g2r" path="res://DialogueBox.tscn" id="1_ilgfq"]
+[ext_resource type="Texture2D" uid="uid://c5h8toqj4npo5" path="res://81550a8e-c239-428d-9052-8e4f6a6fa44a.png" id="2_ilgfq"]
+
+[sub_resource type="GDScript" id="GDScript_xxcha"]
+resource_name = "NPC"
+script/source = "extends StaticBody2D
+
+@export var datos_curiosos: Array[String] = [\"Dato curioso por defecto.\"]
+@export var dialogue_box_scene: PackedScene
+
+@onready var interaction_prompt = $ZonaDeInteraccion/Label
+
+var jugador_en_rango = false
+var dialogo_activo = false
+
+func _ready():
+	interaction_prompt.hide()
+
+func _on_zona_de_interaccion_body_entered(body):
+	if body.is_in_group(\"player\"):
+		interaction_prompt.show()
+		jugador_en_rango = true
+
+func _on_zona_de_interaccion_body_exited(body):
+	if body.is_in_group(\"player\"):
+		interaction_prompt.hide()
+		jugador_en_rango = false
+
+func _unhandled_input(event):
+	if jugador_en_rango and not dialogo_activo and event.is_action_pressed(\"interactuar\"):
+		mostrar_dato_curioso()
+
+func mostrar_dato_curioso():
+	if datos_curiosos.is_empty() or dialogue_box_scene == null:
+		return
+	
+	var dialogue_box = dialogue_box_scene.instantiate()
+	get_tree().root.add_child(dialogue_box)
+	
+	var dato = datos_curiosos.pick_random()
+	dialogue_box.show_message(dato)
+	
+	dialogue_box.closed.connect(_on_dialogo_cerrado)
+	
+	dialogo_activo = true
+	interaction_prompt.hide()
+
+func _on_dialogo_cerrado():
+	dialogo_activo = false
+	
+	if jugador_en_rango:
+		interaction_prompt.show()
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kh24r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ilgfq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ul7y6"]
+radius = 59.118774
+height = 154.19424
+
+[sub_resource type="GDScript" id="GDScript_ideak"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bc6q4"]
+radius = 111.82281
+
+[node name="NPC" type="StaticBody2D"]
+position = Vector2(150, 28)
+collision_layer = 32
+collision_mask = 2
+script = SubResource("GDScript_xxcha")
+datos_curiosos = Array[String](["La Luna se aleja de la Tierra unos 3.8 centímetros cada año.", "No hay atmósfera en la Luna, lo que significa que no hay viento ni clima, y el cielo siempre es negro", "La gravedad en la Luna es solo un 17% de la de la Tierra. Si pesas 60 kg aquí, pesarías solo 10 kg allí.", "Solo 12 personas, todos hombres estadounidenses, han caminado sobre la Luna.", "El polvo lunar huele a pólvora quemada, según los astronautas del programa Apolo.", "La Luna siempre nos muestra la misma cara. Esto se debe a un efecto llamado \"acoplamiento de marea\".", "Las temperaturas en la Luna son extremas, variando desde 127 °C a la luz del sol hasta -173 °C en la oscuridad.", "Los astronautas dejaron espejos en la Luna que los científicos en la Tierra todavía usan para medir su distancia exacta con láseres."])
+dialogue_box_scene = ExtResource("1_ilgfq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(319.99997, -94)
+scale = Vector2(1.2897702, 1.2910075)
+sprite_frames = SubResource("SpriteFrames_kh24r")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(301, -42)
+rotation = 3.0749643
+scale = Vector2(1.6917135, -1.0999361)
+shape = SubResource("CapsuleShape2D_ul7y6")
+
+[node name="ZonaDeInteraccion" type="Area2D" parent="."]
+position = Vector2(-250.99997, 8)
+scale = Vector2(0.90266925, 0.901294)
+collision_layer = 32
+collision_mask = 2
+script = SubResource("GDScript_ideak")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaDeInteraccion"]
+position = Vector2(604.87274, -56.585327)
+scale = Vector2(2.2080152, 2.1041641)
+shape = SubResource("CircleShape2D_bc6q4")
+
+[node name="Label" type="Label" parent="ZonaDeInteraccion"]
+offset_left = 293.5737
+offset_top = -220.79367
+offset_right = 580.25305
+offset_bottom = -65.72116
+scale = Vector2(1.1218922, 1.3797405)
+text = "Press [ E ]
+"
+autowrap_mode = 3
+
+[connection signal="body_entered" from="ZonaDeInteraccion" to="." method="_on_zona_de_interaccion_body_entered"]
+[connection signal="body_entered" from="ZonaDeInteraccion" to="ZonaDeInteraccion" method="_on_body_entered"]
+[connection signal="body_exited" from="ZonaDeInteraccion" to="." method="_on_zona_de_interaccion_body_exited"]
+[connection signal="body_exited" from="ZonaDeInteraccion" to="ZonaDeInteraccion" method="_on_body_exited"]

@@ -1,0 +1,88 @@
+[gd_scene load_steps=7 format=3 uid="uid://d4nsb6jvlo5ns"]
+
+[ext_resource type="Texture2D" uid="uid://qhskckf73rhm" path="res://pixil-frame-0 (6).png" id="1_1g353"]
+[ext_resource type="PackedScene" uid="uid://jp0s0ort80rl" path="res://npc.tscn" id="2_t82tv"]
+[ext_resource type="PackedScene" uid="uid://bky7clsdddd4h" path="res://jugador_1.tscn" id="3_oaeky"]
+[ext_resource type="PackedScene" uid="uid://bb1mvavameqdo" path="res://nave.tscn" id="4_p4qdr"]
+
+[sub_resource type="TileSet" id="TileSet_oimgd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t82tv"]
+size = Vector2(916.8303, 0.0557518)
+
+[node name="Nivel2" type="Node2D"]
+position = Vector2(-92.00003, -42)
+scale = Vector2(1.5110458, 1.8889655)
+
+[node name="TileMap" type="TileMap" parent="."]
+scale = Vector2(1.0048685, 1)
+tile_set = SubResource("TileSet_oimgd")
+format = 2
+
+[node name="PixilFrame0(6)" type="Sprite2D" parent="."]
+position = Vector2(21.342834, 6.8820686)
+scale = Vector2(0.8549394, 0.7051436)
+texture = ExtResource("1_1g353")
+
+[node name="suelo" type="StaticBody2D" parent="."]
+position = Vector2(-24, 552)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="suelo"]
+position = Vector2(-60.999996, -369.00003)
+scale = Vector2(1.3916228, 0.75861603)
+shape = SubResource("RectangleShape2D_t82tv")
+
+[node name="pared_drecha" type="StaticBody2D" parent="."]
+position = Vector2(136, -202)
+rotation = 1.5648941
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pared_drecha"]
+position = Vector2(220.82278, -329.02615)
+scale = Vector2(0.99652636, 0.9376802)
+shape = SubResource("RectangleShape2D_t82tv")
+
+[node name="piso_alien2" type="StaticBody2D" parent="."]
+position = Vector2(265.37915, -326.63382)
+rotation = 3.1506162
+scale = Vector2(0.0487032, 1.2054305)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="piso_alien2"]
+position = Vector2(220.82278, -329.02615)
+scale = Vector2(0.99652636, 0.9376802)
+shape = SubResource("RectangleShape2D_t82tv")
+
+[node name="piso_alien3" type="StaticBody2D" parent="."]
+position = Vector2(-11.250471, -454.2169)
+rotation = 3.1506162
+scale = Vector2(-0.10455383, 1.6013947)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="piso_alien3"]
+position = Vector2(220.82278, -329.02615)
+scale = Vector2(0.99652636, 0.9376802)
+shape = SubResource("RectangleShape2D_t82tv")
+
+[node name="pared_izquierda" type="StaticBody2D" parent="."]
+position = Vector2(-70.81186, 377.45526)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pared_izquierda"]
+position = Vector2(-60.999996, -369.00003)
+scale = Vector2(1.3790547, 0.5557298)
+shape = SubResource("RectangleShape2D_t82tv")
+
+[node name="NPC2" parent="." instance=ExtResource("2_t82tv")]
+position = Vector2(259.423, 75.173416)
+scale = Vector2(0.3511506, 0.25903583)
+datos_curiosos = Array[String](["Un día en Venus es más largo que su año. Tarda más en girar sobre sí mismo que en darle la vuelta al Sol.", "Venus es el planeta más caliente del sistema solar, con temperaturas tan altas que podrían derretir el plomo.", "A diferencia de otros planetas, Venus gira al revés. En su superficie, el Sol sale por el oeste y se pone por el este.", "A Venus se le conoce como el \"planeta hermano\" de la Tierra porque son muy similares en tamaño y masa.", "Las nubes de Venus no están hechas de agua, sino de ácido sulfúrico altamente corrosivo.", "A diferencia de la Tierra y otros planetas, Venus no tiene ninguna luna.", "El planeta Venus recibió su nombre en honor a la diosa romana del amor y la belleza.", "Desde la Tierra, Venus es el objeto más brillante en el cielo nocturno después de la Luna."])
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(23.162598, 1.5881653)
+scale = Vector2(0.7527371, 0.85575217)
+
+[node name="jugador1" parent="." instance=ExtResource("3_oaeky")]
+position = Vector2(-459.94626, 122.289154)
+scale = Vector2(0.07996465, 0.055857603)
+
+[node name="NPC" parent="." instance=ExtResource("4_p4qdr")]
+position = Vector2(-202.50873, 54.5272)
+scale = Vector2(0.71790147, 0.526779)
+datos_curiosos = Array[String](["La tripulación del Apolo 11 estaba formada por tres astronautas: Neil Armstrong, Buzz Aldrin y Michael Collins.", "El módulo lunar, que aterrizó en la Luna, se llamaba \"Eagle\" (Águila). El módulo de mando que se quedó en órbita se llamaba \"Columbia\".", "La primera frase de Neil Armstrong al confirmar el aterrizaje fue: \"Houston, aquí Base Tranquilidad. El Águila ha aterrizado\".", "Neil Armstrong fue el primer ser humano en pisar la Luna, el 20 de julio de 1969. Buzz Aldrin fue el segundo, unos minutos despué"])

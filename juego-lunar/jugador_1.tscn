@@ -1,0 +1,82 @@
+[gd_scene load_steps=7 format=3 uid="uid://bky7clsdddd4h"]
+
+[ext_resource type="Texture2D" uid="uid://cbeef0euiewsm" path="res://1.png" id="1_e31do"]
+[ext_resource type="Texture2D" uid="uid://rq0quxps4rox" path="res://2.png" id="2_eifss"]
+[ext_resource type="Texture2D" uid="uid://bt36283iy6wn0" path="res://3.png" id="2_w68vb"]
+
+[sub_resource type="GDScript" id="GDScript_w68vb"]
+resource_name = "player1"
+script/source = "extends CharacterBody2D
+
+@export var speed = 200.0
+
+@onready var animated_sprite = $AnimatedSprite2D
+
+func _physics_process(delta):
+	# --- Movimiento ---
+	var input_direction = Input.get_vector(\"izquierda\", \"derecha\", \"arriba\", \"abajo\")
+	velocity = input_direction.normalized() * speed
+	move_and_slide()
+
+	# --- Animación ---
+	if velocity.length() > 0:
+		animated_sprite.play(\"walk\")
+	else:
+		animated_sprite.play(\"idle\")
+
+	# --- Voltear Sprite ---
+	if velocity.x != 0:
+		animated_sprite.flip_h = velocity.x < 0
+
+
+func _on_portalnivel_2_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a122l"]
+animations = [{
+"frames": [{
+"duration": 1.11,
+"texture": ExtResource("1_e31do")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w68vb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_e31do")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_eifss")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 7.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eifss"]
+radius = 8.963537
+height = 17.927074
+
+[node name="jugador1" type="CharacterBody2D" groups=["player"]]
+collision_layer = 2
+collision_mask = 33
+input_pickable = true
+script = SubResource("GDScript_w68vb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1645, -697)
+scale = Vector2(1.5430063, 1.4080845)
+sprite_frames = SubResource("SpriteFrames_a122l")
+animation = &"walk"
+frame_progress = 0.20885251
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1669, -616.99994)
+rotation = 4.6930118
+scale = Vector2(26.7594, 24.508297)
+shape = SubResource("CapsuleShape2D_eifss")

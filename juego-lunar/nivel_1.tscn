@@ -1,0 +1,101 @@
+[gd_scene load_steps=8 format=3 uid="uid://qcv7x1dtta4l"]
+
+[ext_resource type="Texture2D" uid="uid://7ctm8wn3b4e2" path="res://pixil-frame-0 (1).png" id="1_xi31o"]
+[ext_resource type="PackedScene" uid="uid://bky7clsdddd4h" path="res://jugador_1.tscn" id="2_eciuy"]
+[ext_resource type="PackedScene" uid="uid://jp0s0ort80rl" path="res://npc.tscn" id="3_2lask"]
+
+[sub_resource type="TileSet" id="TileSet_2lask"]
+physics_layer_0/collision_layer = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2lask"]
+size = Vector2(1297.7992, 4.377289)
+
+[sub_resource type="GDScript" id="GDScript_2lask"]
+resource_name = "portalnivel2"
+script/source = "extends Area2D
+
+func _on_body_entered(body):
+	print(\"¡ALGO ENTRO AL PORTAL! El objeto es: \", body.name)
+
+	if body.is_in_group(\"player\"):
+		print(\"...y ES el jugador. ¡Cambiando de escena a nivel_2!\")
+		# --- RUTA CORREGIDA ---
+		get_tree().change_scene_to_file(\"res://nivel_2.tscn\")
+	else:
+		print(\"...pero NO es el jugador. No haré nada.\")
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m2gv8"]
+size = Vector2(624.0882, 41.933254)
+
+[node name="Nivel1" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2(5, -321)
+scale = Vector2(-1.4606189, 1.3042058)
+tile_set = SubResource("TileSet_2lask")
+format = 2
+
+[node name="Layer1" type="TileMapLayer" parent="TileMap"]
+use_parent_material = true
+tile_set = SubResource("TileSet_2lask")
+
+[node name="PixilFrame0(1)" type="Sprite2D" parent="."]
+position = Vector2(-109.624985, -321)
+scale = Vector2(1.5811943, 1.2676058)
+texture = ExtResource("1_xi31o")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-26.999998, -325)
+scale = Vector2(1.2929485, 3.062986)
+
+[node name="jugador1" parent="." instance=ExtResource("2_eciuy")]
+position = Vector2(-791, -45)
+scale = Vector2(0.14515825, 0.15774092)
+slide_on_ceiling = false
+speed = 280.0
+
+[node name="NPC" parent="." instance=ExtResource("3_2lask")]
+position = Vector2(-60.99997, -230)
+scale = Vector2(0.7322789, 0.64319634)
+constant_linear_velocity = Vector2(0, -0.025)
+
+[node name="Paredinvisible" type="StaticBody2D" parent="."]
+position = Vector2(-81, -399.00003)
+scale = Vector2(0.09765005, -0.48889366)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paredinvisible"]
+position = Vector2(31.000034, -327.00003)
+scale = Vector2(0.99652636, 0.9376802)
+shape = SubResource("RectangleShape2D_2lask")
+
+[node name="paredinvisible_suelo" type="StaticBody2D" parent="."]
+position = Vector2(-177.00002, -334)
+scale = Vector2(1.5458561, 1.0057594)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="paredinvisible_suelo"]
+position = Vector2(12, -1.0000305)
+scale = Vector2(0.9924494, 0.97375774)
+shape = SubResource("RectangleShape2D_2lask")
+
+[node name="paredinvisible_suelo_alien" type="StaticBody2D" parent="."]
+scale = Vector2(1.9167758, 0.8906358)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="paredinvisible_suelo_alien"]
+position = Vector2(12, -1.0000305)
+scale = Vector2(0.9924494, 0.97375774)
+shape = SubResource("RectangleShape2D_2lask")
+
+[node name="Portalnivel2" type="Area2D" parent="."]
+position = Vector2(0, -3)
+collision_layer = 64
+collision_mask = 2
+script = SubResource("GDScript_2lask")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Portalnivel2"]
+position = Vector2(593.00977, -322.7339)
+rotation = -1.5834739
+shape = SubResource("RectangleShape2D_m2gv8")
+
+[connection signal="body_entered" from="Portalnivel2" to="jugador1" method="_on_portalnivel_2_body_entered"]
+[connection signal="body_entered" from="Portalnivel2" to="Portalnivel2" method="_on_body_entered"]
